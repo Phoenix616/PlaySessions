@@ -95,7 +95,7 @@ public class PlaySessionsCommand {
                                         );
                                     }
                                     if (sessions.size() == 0) {
-                                        plugin.sendMessage(senderId, ChatColor.RED + "No past sessions found!");
+                                        plugin.sendMessage(senderId, ChatColor.RED + " No past sessions found!");
                                     }
 
                                 } else {
@@ -103,10 +103,10 @@ public class PlaySessionsCommand {
                                 }
                             });
                         } else {
-                            plugin.sendMessage(senderId, ChatColor.YELLOW + "Active" + ChatColor.GREEN + " sessions:");
+                            plugin.sendMessage(senderId, ChatColor.GREEN + "Active sessions:");
                             for (PlaySession session : plugin.getManager().getActiveSessions()) {
                                 plugin.sendMessage(senderId,
-                                        ChatColor.YELLOW + session.getPlayerName() +
+                                        ChatColor.YELLOW + " " + session.getPlayerName() +
                                         ChatColor.GREEN + " since " + ChatColor.YELLOW + DATE_FORMAT.format(new Date(session.getStart())) +
                                         ChatColor.GREEN + " at " + ChatColor.YELLOW + session.getLocation()
                                 );
