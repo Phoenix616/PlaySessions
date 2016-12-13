@@ -65,11 +65,11 @@ public class MySQLStorage implements SessionStorage {
         // create table
         try (Statement stat = getConn().createStatement()){
             String tableSql = "CREATE TABLE IF NOT EXISTS `" + table + "` (" +
-                    "id MEDIUMINT NOT NULL AUTO_INCREMENT, " +
-                    "playerid CHAR(36) NOT NULL PRIMARY KEY, " +
+                    "id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, " +
+                    "playerid CHAR(36) NOT NULL, " +
                     "playername VARCHAR(16) NOT NULL, " +
                     "location VARCHAR(255), " +
-                    "starttime DATETIME, " +
+                    "starttime DATETIME NOT NULL, " +
                     "endtime DATETIME, " +
                     "INDEX (playerid) " +
                     ") DEFAULT CHARACTER SET=utf8 AUTO_INCREMENT=1;";
