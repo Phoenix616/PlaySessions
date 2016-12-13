@@ -1,4 +1,4 @@
-name: ${project.name}
+name: ${minecraft.plugin.name}
 version: '${minecraft.plugin.version}'
 main: de.themoep.playsessions.bungee.PlaySessions
 commands:
