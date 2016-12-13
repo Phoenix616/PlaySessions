@@ -16,6 +16,7 @@ package de.themoep.playsessions.core;
  */
 
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class PlaySession {
     private final UUID playerId;
@@ -69,6 +70,39 @@ public class PlaySession {
      */
     public long getDuration() {
         return end > 0 ? end - start : System.currentTimeMillis() - start;
+    }
+
+    public String getFormattedDuration() {
+        long duration = getDuration() / 1000;
+
+        int seconds = (int) (duration % 60);
+        int minutes = (int) (TimeUnit.SECONDS.toMinutes(duration) % 60);
+        int hours = (int) (TimeUnit.SECONDS.toHours(duration) % 24);
+        int days = (int) (TimeUnit.SECONDS.toDays(duration) % 30);
+        int months = (int) ((TimeUnit.SECONDS.toDays(duration) / 30) % 365);
+        int years = (int) (TimeUnit.SECONDS.toDays(duration) / 30 / 365);
+
+        StringBuilder sb = new StringBuilder();
+
+        if(years > 0)
+            sb.append(years).append("y");
+
+        if(months > 0)
+            sb.append(months).append("mo");
+
+        if(days > 0)
+            sb.append(days).append("d");
+
+        if(hours > 0)
+            sb.append(hours).append("h");
+
+        if(minutes > 0)
+            sb.append(minutes).append("m");
+
+        if(seconds > 0)
+            sb.append(seconds).append("s");
+
+        return sb.toString();
     }
 
     @Override

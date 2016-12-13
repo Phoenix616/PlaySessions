@@ -22,7 +22,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 public class PlaySessionsCommand {
 
@@ -80,7 +79,7 @@ public class PlaySessionsCommand {
                                     if (plugin.getManager().hasActiveSession(playerId)) {
                                         PlaySession activeSession = plugin.getManager().getActiveSession(playerId);
                                         plugin.sendMessage(senderId, ChatColor.YELLOW + " Online" +
-                                                ChatColor.GREEN + " for " + ChatColor.YELLOW + TimeUnit.MILLISECONDS.toMinutes(activeSession.getDuration()) + "m" +
+                                                ChatColor.GREEN + " for " + ChatColor.YELLOW + activeSession.getFormattedDuration() +
                                                 ChatColor.GREEN + " since " + ChatColor.YELLOW + DATE_FORMAT.format(new Date(activeSession.getStart())) +
                                                 ChatColor.GREEN + " at " + ChatColor.YELLOW + activeSession.getLocation()
                                         );
@@ -90,7 +89,7 @@ public class PlaySessionsCommand {
                                     for (int i = page * PAGE_SIZE; i < (page + 1) * PAGE_SIZE && i < sessions.size(); i++) {
                                         PlaySession session = sessions.get(i);
                                         plugin.sendMessage(senderId, ChatColor.YELLOW + " " + DATE_FORMAT.format(new Date(session.getStart())) +
-                                                ChatColor.GREEN + " for " + ChatColor.YELLOW + TimeUnit.MILLISECONDS.toMinutes(session.getDuration()) + "m" +
+                                                ChatColor.GREEN + " for " + ChatColor.YELLOW + session.getFormattedDuration() +
                                                 ChatColor.GREEN + " at " + ChatColor.YELLOW + session.getLocation()
                                         );
                                     }
