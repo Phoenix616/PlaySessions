@@ -63,7 +63,7 @@ public class MySQLStorage implements SessionStorage {
 
     private void initializeTable() throws SQLException {
         // create table
-        try (Statement stat = getConn().createStatement()){
+        try (Connection conn = getConn(); Statement stat = conn.createStatement()){
             String tableSql = "CREATE TABLE IF NOT EXISTS `" + table + "` (" +
                     "id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, " +
                     "playerid CHAR(36) NOT NULL, " +
@@ -82,7 +82,7 @@ public class MySQLStorage implements SessionStorage {
         String insertSql = "INSERT INTO `" + table + "` " +
                 "(playerid, playername, location, starttime, endtime) " +
                 "VALUES(?, ?, ?, ?, ?)";
-        try (PreparedStatement stat = getConn().prepareStatement(insertSql)) {
+        try (Connection conn = getConn(); PreparedStatement stat = conn.prepareStatement(insertSql)) {
             for (int i = 0; i < sessions.length; i++) {
                 stat.setString(1, sessions[i].getPlayerId().toString());
                 stat.setString(2, sessions[i].getPlayerName());
@@ -108,7 +108,7 @@ public class MySQLStorage implements SessionStorage {
         String selectSql = "SELECT * FROM `" + table + "` " +
                 "WHERE playerid=? " +
                 "ORDER BY id";
-        try (PreparedStatement stat = getConn().prepareStatement(selectSql)) {
+        try (Connection conn = getConn(); PreparedStatement stat = conn.prepareStatement(selectSql)) {
             stat.setString(1, playerId.toString());
             try (ResultSet rs = stat.executeQuery()) {
                 while (rs.next()) {
