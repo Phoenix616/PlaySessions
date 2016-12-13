@@ -1,7 +1,7 @@
 storage:
   type: mysql
   username: username
-  passwort: password1
+  password: password1
   database: mydatabase
   host: localhost
   port: 3306
