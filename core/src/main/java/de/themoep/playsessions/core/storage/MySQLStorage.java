@@ -71,7 +71,8 @@ public class MySQLStorage implements SessionStorage {
                     "location VARCHAR, " +
                     "starttime DATETIME, " +
                     "endtime DATETIME" +
-                    ")";
+                    "INDEX (playerid) " +
+                    ") DEFAULT CHARACTER SET=utf8 AUTO_INCREMENT=1;";
             stat.execute(tableSql);
         }
     }
