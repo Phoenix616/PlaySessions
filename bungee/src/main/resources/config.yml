@@ -1,0 +1,8 @@
+storage:
+  type: mysql
+  username: username
+  passwort: password1
+  database: mydatabase
+  host: localhost
+  port: 3306
+  tableprefix: ps_

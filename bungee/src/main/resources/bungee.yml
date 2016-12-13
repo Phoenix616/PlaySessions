@@ -1,0 +1,20 @@
+name: ${project.name}
+version: '${minecraft.plugin.version}'
+main: de.themoep.playsessions.bungee.PlaySessions
+commands:
+   playsessions:
+      aliases: [playsession, ps]
+      description: Plugin command description.
+      usage: /<command> [reload]
+      permission: PlayerSessions.command
+      permission-message: You don't have the permission <permission>
+permissions:
+   playsessions.command:
+      description: Gives permission to the plugin command
+      default: op
+   playsessions.command.reload:
+      description: Gives permission to reload the plugin
+      default: false
+   playsessions.record:
+      description: Gives permission to reload the plugin
+      default: false
