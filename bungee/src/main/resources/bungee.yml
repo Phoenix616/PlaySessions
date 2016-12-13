@@ -2,6 +2,7 @@ name: ${minecraft.plugin.name}
 version: '${minecraft.plugin.version}'
 main: de.themoep.playsessions.bungee.PlaySessions
 author: Phoenix616
+softDepends: [UUIDDB]
 commands:
    playsessions:
       aliases: [playsession, ps]
