@@ -40,6 +40,7 @@ public final class PlaySessions extends Plugin implements PlaySessionsPlugin {
     private FileConfiguration config;
     private boolean enabled = false;
     private UUIDDBPlugin uuiddb;
+    private boolean logSwitches;
 
     @Override
     public void onEnable() {
@@ -72,6 +73,7 @@ public final class PlaySessions extends Plugin implements PlaySessionsPlugin {
             getLogger().log(Level.SEVERE, "Error while loading config", e);
             return false;
         }
+        logSwitches = getConfig().getBoolean("log-switch");
         return manager.setupDatabase();
     }
 
@@ -98,8 +100,8 @@ public final class PlaySessions extends Plugin implements PlaySessionsPlugin {
         manager.disable();
     }
 
-    public PlaySession startSession(ProxiedPlayer player) {
-        return manager.startSession(player.getUniqueId(), player.getName(), player.getServer().getInfo().getName());
+    public PlaySession startSession(ProxiedPlayer player, String location) {
+        return manager.startSession(player.getUniqueId(), player.getName(), location);
     }
 
     /**
@@ -171,5 +173,9 @@ public final class PlaySessions extends Plugin implements PlaySessionsPlugin {
             return false;
         }
         return true;
+    }
+
+    public boolean shouldLogSwitches() {
+        return logSwitches;
     }
 }

@@ -1,3 +1,4 @@
+log-switches: false
 storage:
   type: mysql
   username: username
