@@ -67,8 +67,8 @@ public class MySQLStorage implements SessionStorage {
             String tableSql = "CREATE TABLE IF NOT EXISTS `" + table + "` (" +
                     "id MEDIUMINT NOT NULL AUTO_INCREMENT, " +
                     "playerid CHAR(36) NOT NULL PRIMARY KEY, " +
-                    "playername CHAR(16) NOT NULL, " +
-                    "location VARCHAR, " +
+                    "playername VARCHAR(16) NOT NULL, " +
+                    "location VARCHAR(255), " +
                     "starttime DATETIME, " +
                     "endtime DATETIME, " +
                     "INDEX (playerid) " +
