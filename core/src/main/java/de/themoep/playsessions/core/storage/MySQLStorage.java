@@ -78,20 +78,26 @@ public class MySQLStorage implements SessionStorage {
     }
 
     @Override
-    public boolean saveSession(PlaySession session) {
+    public boolean saveSession(PlaySession... sessions) {
         String insertSql = "INSERT INTO `" + table + "` " +
                 "(playerid, playername, location, starttime, endtime) " +
                 "VALUES(?, ?, ?, ?, ?)";
         try (PreparedStatement stat = getConn().prepareStatement(insertSql)) {
-            stat.setString(1, session.getPlayerId().toString());
-            stat.setString(2, session.getPlayerName());
-            stat.setString(3, session.getLocation());
-            stat.setDate(4, new Date(session.getStart()));
-            stat.setDate(5, new Date(session.getStart()));
-            stat.execute();
+            for (int i = 0; i < sessions.length; i++) {
+                stat.setString(1, sessions[i].getPlayerId().toString());
+                stat.setString(2, sessions[i].getPlayerName());
+                stat.setString(3, sessions[i].getLocation());
+                stat.setDate(4, new Date(sessions[i].getStart()));
+                stat.setDate(5, new Date(sessions[i].getEnd()));
+                stat.addBatch();
+
+                if (i == sessions.length - 1 || i % 1000 == 0) {
+                    stat.executeBatch();
+                }
+            }
             return true;
         } catch (SQLException e) {
-            plugin.getLogger().log(Level.SEVERE, "Error while trying to save session to MySQL! (" + session + ")", e);
+            plugin.getLogger().log(Level.SEVERE, "Error while trying to save sessions to MySQL! (" + sessions.length + " sessions)", e);
             return false;
         }
     }

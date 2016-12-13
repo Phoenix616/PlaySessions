@@ -23,7 +23,7 @@ import java.util.UUID;
 public interface SessionStorage {
     void disable();
 
-    boolean saveSession(PlaySession session);
+    boolean saveSession(PlaySession... sessions);
 
     List<PlaySession> getSessions(UUID playerId);
 }

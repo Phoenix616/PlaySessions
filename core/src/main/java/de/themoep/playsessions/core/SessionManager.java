@@ -78,6 +78,7 @@ public class SessionManager {
     public PlaySession stopSession(UUID playerId) {
         PlaySession session = getActiveSession(playerId);
         if (session != null) {
+            session.end();
             activeSessions.remove(playerId);
             if (storage != null) {
                 plugin.runAsync(() -> storage.saveSession(session));
@@ -88,6 +89,8 @@ public class SessionManager {
 
     public void disable() {
         if (storage != null) {
+            getActiveSessions().forEach(PlaySession::end);
+            storage.saveSession(getActiveSessions().toArray(new PlaySession[getActiveSessions().size()]));
             storage.disable();
         }
     }
