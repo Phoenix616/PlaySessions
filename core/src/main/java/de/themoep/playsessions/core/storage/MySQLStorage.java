@@ -20,11 +20,11 @@ import de.themoep.playsessions.core.PlaySession;
 import de.themoep.playsessions.core.PlaySessionsPlugin;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -69,8 +69,8 @@ public class MySQLStorage implements SessionStorage {
                     "playerid CHAR(36) NOT NULL, " +
                     "playername VARCHAR(16) NOT NULL, " +
                     "location VARCHAR(255), " +
-                    "starttime DATETIME NOT NULL, " +
-                    "endtime DATETIME, " +
+                    "starttime TIMESTAMP NOT NULL, " +
+                    "endtime TIMESTAMP, " +
                     "INDEX (playerid) " +
                     ") DEFAULT CHARACTER SET=utf8 AUTO_INCREMENT=1;";
             stat.execute(tableSql);
@@ -87,8 +87,8 @@ public class MySQLStorage implements SessionStorage {
                 stat.setString(1, sessions[i].getPlayerId().toString());
                 stat.setString(2, sessions[i].getPlayerName());
                 stat.setString(3, sessions[i].getLocation());
-                stat.setDate(4, new Date(sessions[i].getStart()));
-                stat.setDate(5, new Date(sessions[i].getEnd()));
+                stat.setTimestamp(4, new Timestamp(sessions[i].getStart()));
+                stat.setTimestamp(5, new Timestamp(sessions[i].getEnd()));
                 stat.addBatch();
 
                 if (i == sessions.length - 1 || i % 1000 == 0) {
@@ -116,8 +116,8 @@ public class MySQLStorage implements SessionStorage {
                             playerId,
                             rs.getString("playername"),
                             rs.getString("location"),
-                            rs.getDate("starttime").getTime(),
-                            rs.getDate("endtime").getTime()
+                            rs.getTimestamp("starttime").getTime(),
+                            rs.getTimestamp("endtime").getTime()
                     ));
                 }
             } catch (SQLException e) {
