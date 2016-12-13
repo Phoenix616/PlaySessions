@@ -21,7 +21,7 @@
     <properties>
         <plugin.version>1.0-SNAPSHOT</plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <minecraft.plugin.name>${project.name}</minecraft.plugin.name>
+        <minecraft.plugin.name>PlaySessions</minecraft.plugin.name>
         <minecraft.plugin.version>${plugin.version} ${buildDescription}</minecraft.plugin.version>
     </properties>
 
