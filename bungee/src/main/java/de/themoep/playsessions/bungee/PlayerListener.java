@@ -40,7 +40,7 @@ public class PlayerListener implements Listener {
 
         if (event.getPlayer().getServer() == null) {
             // this is a new connection and not a switch
-            plugin.startSession(event.getPlayer());
+            plugin.startSession(event.getPlayer(), event.getTarget().getName());
         } else {
             // player was connected to server before
             plugin.stopSession(event.getPlayer());
@@ -55,7 +55,7 @@ public class PlayerListener implements Listener {
         if (!event.getPlayer().hasPermission("playsessions.record"))
             return;
 
-        plugin.startSession(event.getPlayer());
+        plugin.startSession(event.getPlayer(), event.getPlayer().getServer().getInfo().getName());
     }
 
     @EventHandler
