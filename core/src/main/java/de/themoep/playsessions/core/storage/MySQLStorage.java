@@ -80,7 +80,7 @@ public class MySQLStorage implements SessionStorage {
     @Override
     public boolean saveSession(PlaySession session) {
         String insertSql = "INSERT INTO `" + table + "` " +
-                "(playerid, playername, server, starttime, endtime) " +
+                "(playerid, playername, location, starttime, endtime) " +
                 "VALUES(?, ?, ?, ?, ?)";
         try (PreparedStatement stat = getConn().prepareStatement(insertSql)) {
             stat.setString(1, session.getPlayerId().toString());
