@@ -5,4 +5,4 @@ storage:
   database: mydatabase
   host: localhost
   port: 3306
-  tableprefix: ps_
+  table: playsessions
