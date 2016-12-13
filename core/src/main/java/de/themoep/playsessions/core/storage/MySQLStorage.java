@@ -116,8 +116,8 @@ public class MySQLStorage implements SessionStorage {
                             playerId,
                             rs.getString("playername"),
                             rs.getString("location"),
-                            rs.getDate("start").getTime(),
-                            rs.getDate("end").getTime()
+                            rs.getDate("starttime").getTime(),
+                            rs.getDate("endtime").getTime()
                     ));
                 }
             } catch (SQLException e) {
