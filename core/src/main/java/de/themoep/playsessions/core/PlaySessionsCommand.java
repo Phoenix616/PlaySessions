@@ -81,7 +81,7 @@ public class PlaySessionsCommand {
                                         plugin.sendMessage(senderId, ChatColor.YELLOW + " Online" +
                                                 ChatColor.GREEN + " for " + ChatColor.YELLOW + activeSession.getFormattedDuration() +
                                                 ChatColor.GREEN + " since " + ChatColor.YELLOW + DATE_FORMAT.format(new Date(activeSession.getStart())) +
-                                                ChatColor.GREEN + " at " + ChatColor.YELLOW + activeSession.getLocation()
+                                                (activeSession.getLocation() != null ? ChatColor.GREEN + " at " + ChatColor.YELLOW + activeSession.getLocation() : "")
                                         );
                                     }
 
@@ -90,7 +90,7 @@ public class PlaySessionsCommand {
                                         PlaySession session = sessions.get(i);
                                         plugin.sendMessage(senderId, ChatColor.YELLOW + " " + DATE_FORMAT.format(new Date(session.getStart())) +
                                                 ChatColor.GREEN + " for " + ChatColor.YELLOW + session.getFormattedDuration() +
-                                                ChatColor.GREEN + " at " + ChatColor.YELLOW + session.getLocation()
+                                                (session.getLocation() != null ? ChatColor.GREEN + " at " + ChatColor.YELLOW + session.getLocation() : "")
                                         );
                                     }
                                     if (sessions.size() == 0) {
@@ -104,10 +104,9 @@ public class PlaySessionsCommand {
                         } else {
                             plugin.sendMessage(senderId, ChatColor.GREEN + "Active sessions:");
                             for (PlaySession session : plugin.getManager().getActiveSessions()) {
-                                plugin.sendMessage(senderId,
-                                        ChatColor.YELLOW + " " + session.getPlayerName() +
+                                plugin.sendMessage(senderId, ChatColor.YELLOW + " " + session.getPlayerName() +
                                         ChatColor.GREEN + " since " + ChatColor.YELLOW + DATE_FORMAT.format(new Date(session.getStart())) +
-                                        ChatColor.GREEN + " at " + ChatColor.YELLOW + session.getLocation()
+                                        (session.getLocation() != null ? ChatColor.GREEN + " at " + ChatColor.YELLOW + session.getLocation() : "")
                                 );
                             }
                         }
