@@ -100,8 +100,8 @@ public final class PlaySessions extends Plugin implements PlaySessionsPlugin {
         manager.disable();
     }
 
-    public PlaySession startSession(ProxiedPlayer player, String location) {
-        return manager.startSession(player.getUniqueId(), player.getName(), location);
+    public PlaySession startSession(ProxiedPlayer player) {
+        return manager.startSession(player.getUniqueId(), player.getName(), player.getServer() != null ? player.getServer().getInfo().getName() : null);
     }
 
     /**

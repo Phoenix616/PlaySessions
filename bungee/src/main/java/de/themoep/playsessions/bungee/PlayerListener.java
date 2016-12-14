@@ -41,7 +41,7 @@ public class PlayerListener implements Listener {
         if (event.getPlayer().getServer() == null) {
             // player wasn't connected -> new join
             if (!plugin.shouldLogSwitches()) {
-                plugin.startSession(event.getPlayer(), event.getTarget().getName());
+                plugin.startSession(event.getPlayer());
             }
         } else if (plugin.shouldLogSwitches()){
             // player was connected to server before
@@ -57,7 +57,7 @@ public class PlayerListener implements Listener {
         if (!event.getPlayer().hasPermission("playsessions.record"))
             return;
 
-        plugin.startSession(event.getPlayer(), event.getPlayer().getServer().getInfo().getName());
+        plugin.startSession(event.getPlayer());
     }
 
     @EventHandler
