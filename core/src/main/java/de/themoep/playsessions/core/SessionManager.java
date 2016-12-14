@@ -36,6 +36,7 @@ public class SessionManager {
     }
 
     public boolean setupDatabase() {
+        disableDb();
         if ("mysql".equalsIgnoreCase(plugin.getConfig().getString("storage.type"))) {
             try {
                 storage = new MySQLStorage(plugin);
@@ -88,6 +89,10 @@ public class SessionManager {
     }
 
     public void disable() {
+        disableDb();
+    }
+
+    private void disableDb() {
         if (storage != null) {
             getActiveSessions().forEach(PlaySession::end);
             storage.saveSession(getActiveSessions().toArray(new PlaySession[getActiveSessions().size()]));
