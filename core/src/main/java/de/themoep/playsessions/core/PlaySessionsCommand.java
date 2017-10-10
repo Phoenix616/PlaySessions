@@ -19,6 +19,7 @@ package de.themoep.playsessions.core;
 import net.md_5.bungee.api.ChatColor;
 
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -86,6 +87,7 @@ public class PlaySessionsCommand {
                                     }
 
                                     List<PlaySession> sessions = plugin.getManager().getSessions(playerId);
+                                    sessions.sort((ps1, ps2) -> Long.compare(ps2.getEnd(), ps1.getEnd()));
                                     for (int i = page * PAGE_SIZE; i < (page + 1) * PAGE_SIZE && i < sessions.size(); i++) {
                                         PlaySession session = sessions.get(i);
                                         plugin.sendMessage(senderId, ChatColor.YELLOW + " " + DATE_FORMAT.format(new Date(session.getStart())) +
