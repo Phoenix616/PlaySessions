@@ -107,7 +107,7 @@ public class MySQLStorage implements SessionStorage {
         List<PlaySession> sessions = new ArrayList<>();
         String selectSql = "SELECT * FROM `" + table + "` " +
                 "WHERE playerid=? " +
-                "ORDER BY id DESC";
+                "ORDER BY endtime DESC";
         try (Connection conn = getConn(); PreparedStatement stat = conn.prepareStatement(selectSql)) {
             stat.setString(1, playerId.toString());
             try (ResultSet rs = stat.executeQuery()) {

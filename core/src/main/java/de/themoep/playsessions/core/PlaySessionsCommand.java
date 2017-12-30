@@ -87,7 +87,6 @@ public class PlaySessionsCommand {
                                     }
 
                                     List<PlaySession> sessions = plugin.getManager().getSessions(playerId);
-                                    sessions.sort((ps1, ps2) -> Long.compare(ps2.getEnd(), ps1.getEnd()));
                                     for (int i = page * PAGE_SIZE; i < (page + 1) * PAGE_SIZE && i < sessions.size(); i++) {
                                         PlaySession session = sessions.get(i);
                                         plugin.sendMessage(senderId, ChatColor.YELLOW + " " + DATE_FORMAT.format(new Date(session.getStart())) +
