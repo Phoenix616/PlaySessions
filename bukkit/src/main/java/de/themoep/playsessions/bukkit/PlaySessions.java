@@ -1,4 +1,4 @@
-package de.themoep.playsessions.bungee;
+package de.themoep.playsessions.bukkit;
 
 import de.themoep.playsessions.core.PlaySession;
 import de.themoep.playsessions.core.PlaySessionsCommand;
@@ -6,20 +6,16 @@ import de.themoep.playsessions.core.PlaySessionsConfig;
 import de.themoep.playsessions.core.PlaySessionsPlugin;
 import de.themoep.playsessions.core.SessionManager;
 
-import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.md_5.bungee.api.plugin.Command;
-import net.md_5.bungee.api.plugin.Plugin;
 import net.zaiyers.UUIDDB.core.UUIDDBPlugin;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.IOException;
 import java.util.UUID;
-import java.util.logging.Level;
 
 /*
- * Copyright 2016 Max Lee (https://github.com/Phoenix616/)
+ * Copyright 2017 Max Lee (https://github.com/Phoenix616/)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the Mozilla Public License as published by
@@ -34,11 +30,10 @@ import java.util.logging.Level;
  * along with this program. If not, see <http://mozilla.org/MPL/2.0/>.
  */
 
-public final class PlaySessions extends Plugin implements PlaySessionsPlugin {
+public final class PlaySessions extends JavaPlugin implements PlaySessionsPlugin {
 
+    private PluginConfig pluginConfig = new PluginConfig(this);
     private SessionManager manager;
-    private FileConfiguration config;
-    private boolean enabled = false;
     private UUIDDBPlugin uuiddb;
     private boolean logSwitches;
 
@@ -46,40 +41,31 @@ public final class PlaySessions extends Plugin implements PlaySessionsPlugin {
     public void onEnable() {
         manager = new SessionManager(this);
         if (loadConfig()) {
-            getProxy().getPluginManager().registerListener(this, new PlayerListener(this));
+            getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
 
-            if (getProxy().getPluginManager().getPlugin("UUIDDB") != null) {
-                uuiddb = (UUIDDBPlugin) getProxy().getPluginManager().getPlugin("UUIDDB");
+            if (getServer().getPluginManager().isPluginEnabled("UUIDDB")) {
+                uuiddb = (UUIDDBPlugin) getServer().getPluginManager().getPlugin("UUIDDB");
             }
 
             PlaySessions instance = this;
-            getProxy().getPluginManager().registerCommand(this, new Command("playsessions", "playsessions.command", "playsession", "ps") {
-                @Override
-                public void execute(CommandSender sender, String[] args) {
-                    if (!PlaySessionsCommand.execute(instance, sender instanceof ProxiedPlayer ? ((ProxiedPlayer) sender).getUniqueId() : null, args)) {
-                        sender.sendMessage("Wrong Usage: /playsessions [list [<player> <#page>]|reload]");
-                    }
+            getCommand("playsessions").setExecutor((sender, command, s, args) -> {
+                if (!PlaySessionsCommand.execute(instance, sender instanceof Player ? ((Player) sender).getUniqueId() : null, args)) {
+                    sender.sendMessage("Wrong Usage: /playsessions [list [<player> <#page>]|reload]");
                 }
+                return true;
             });
-
-            enabled = true;
         }
     }
 
     public boolean loadConfig() {
-        try {
-            config = new FileConfiguration(this, "config.yml");
-        } catch (IOException e) {
-            getLogger().log(Level.SEVERE, "Error while loading config", e);
-            return false;
-        }
+        reloadConfig();
         logSwitches = getPluginConfig().getBoolean("log-switch");
         return manager.setupDatabase();
     }
 
     @Override
     public UUID getPlayerId(String playerName) {
-        ProxiedPlayer player = getProxy().getPlayer(playerName);
+        Player player = getServer().getPlayer(playerName);
         if (player != null) {
             return player.getUniqueId();
         }
@@ -100,8 +86,8 @@ public final class PlaySessions extends Plugin implements PlaySessionsPlugin {
         manager.disable();
     }
 
-    public PlaySession startSession(ProxiedPlayer player) {
-        return manager.startSession(player.getUniqueId(), player.getName(), player.getServer() != null ? player.getServer().getInfo().getName() : null);
+    public PlaySession startSession(Player player) {
+        return manager.startSession(player.getUniqueId(), player.getName(), player.getWorld() != null ? player.getWorld().getName() : null);
     }
 
     /**
@@ -109,11 +95,11 @@ public final class PlaySessions extends Plugin implements PlaySessionsPlugin {
      * @param player    The player to stop the session for
      * @return          The active session; <tt>null</tt> if he didn't have one
      */
-    public PlaySession stopSession(ProxiedPlayer player) {
+    public PlaySession stopSession(Player player) {
         return manager.stopSession(player.getUniqueId());
     }
 
-    public boolean hasActiveSession(ProxiedPlayer player) {
+    public boolean hasActiveSession(Player player) {
         return manager.hasActiveSession(player.getUniqueId());
     }
 
@@ -122,7 +108,7 @@ public final class PlaySessions extends Plugin implements PlaySessionsPlugin {
      * @param player    The player to get the session for
      * @return          The active PlaySession, <tt>null</tt> if he doesn't have one
      */
-    public PlaySession getActiveSession(ProxiedPlayer player) {
+    public PlaySession getActiveSession(Player player) {
         return manager.getActiveSession(player.getUniqueId());
     }
 
@@ -132,18 +118,13 @@ public final class PlaySessions extends Plugin implements PlaySessionsPlugin {
     }
 
     @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    @Override
     public PlaySessionsConfig getPluginConfig() {
-        return config;
+        return pluginConfig;
     }
 
     @Override
     public int runAsync(Runnable runnable) {
-        return getProxy().getScheduler().runAsync(this, runnable).getId();
+        return getServer().getScheduler().runTaskAsynchronously(this, runnable).getTaskId();
     }
 
     @Override
@@ -154,19 +135,19 @@ public final class PlaySessions extends Plugin implements PlaySessionsPlugin {
     @Override
     public void sendMessage(UUID playerId, BaseComponent[] message) {
         if (playerId != null) {
-            ProxiedPlayer player = getProxy().getPlayer(playerId);
+            Player player = getServer().getPlayer(playerId);
             if (player != null) {
-                player.sendMessage(message);
+                player.spigot().sendMessage(message);
             }
         } else {
-            getProxy().getConsole().sendMessage(message);
+            getServer().getConsoleSender().spigot().sendMessage(message);
         }
     }
 
     @Override
     public boolean hasPermission(UUID playerId, String permission) {
         if (playerId != null) {
-            ProxiedPlayer player = getProxy().getPlayer(playerId);
+            Player player = getServer().getPlayer(playerId);
             if (player != null) {
                 return player.hasPermission(permission);
             }
@@ -178,4 +159,5 @@ public final class PlaySessions extends Plugin implements PlaySessionsPlugin {
     public boolean shouldLogSwitches() {
         return logSwitches;
     }
+    
 }

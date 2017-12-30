@@ -37,7 +37,7 @@ public class SessionManager {
 
     public boolean setupDatabase() {
         disableDb();
-        if ("mysql".equalsIgnoreCase(plugin.getConfig().getString("storage.type"))) {
+        if ("mysql".equalsIgnoreCase(plugin.getPluginConfig().getString("storage.type"))) {
             try {
                 storage = new MySQLStorage(plugin);
                 return true;
@@ -45,7 +45,7 @@ public class SessionManager {
                 plugin.getLogger().log(Level.SEVERE, "Error while initializing MySQLStorage! Will not store non-active sessions!", e);
             }
         } else {
-            plugin.getLogger().log(Level.WARNING, "Unknown storage type " + plugin.getConfig().getString("storage.type") + "! Will not store non-active sessions!");
+            plugin.getLogger().log(Level.WARNING, "Unknown storage type " + plugin.getPluginConfig().getString("storage.type") + "! Will not store non-active sessions!");
         }
         return false;
     }

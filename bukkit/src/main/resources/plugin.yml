@@ -1,0 +1,25 @@
+name: ${minecraft.plugin.name}
+version: '${minecraft.plugin.version}'
+main: de.themoep.playsessions.plugin.PlaySessions
+author: Phoenix616
+softDepends: [UUIDDB]
+commands:
+   playsessions:
+      aliases: [playsession, ps]
+      description: Plugin command description.
+      usage: /<command> [list [<player> <#page>]|reload]
+      permission: PlayerSessions.command
+      permission-message: You don't have the permission <permission>
+permissions:
+   playsessions.command:
+      description: Gives permission to the plugin command
+      default: false
+   playsessions.command.reload:
+      description: Gives permission to reload the plugin
+      default: false
+   playsessions.command.list:
+      description: Gives permission to reload the plugin
+      default: false
+   playsessions.record:
+      description: Gives permission to reload the plugin
+      default: false

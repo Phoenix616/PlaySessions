@@ -24,6 +24,12 @@
         </dependency>
         <dependency>
             <groupId>de.themoep.playsessions</groupId>
+            <artifactId>bukkit</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.themoep.playsessions</groupId>
             <artifactId>bungee</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>

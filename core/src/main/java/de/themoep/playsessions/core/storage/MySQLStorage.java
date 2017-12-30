@@ -45,17 +45,17 @@ public class MySQLStorage implements SessionStorage {
         this.plugin = plugin;
 
         plugin.getLogger().info("Loading MySQLStorage...");
-        this.table = plugin.getConfig().getString("storage.table");
+        this.table = plugin.getPluginConfig().getString("storage.table");
 
-        String host = plugin.getConfig().getString("storage.host");
-        int port = plugin.getConfig().getInt("storage.port");
-        String database = plugin.getConfig().getString("storage.database");
+        String host = plugin.getPluginConfig().getString("storage.host");
+        int port = plugin.getPluginConfig().getInt("storage.port");
+        String database = plugin.getPluginConfig().getString("storage.database");
 
         ds = new HikariDataSource();
         ds.setDriverClassName("org.mariadb.jdbc.Driver");
         ds.setJdbcUrl("jdbc:mariadb://" + host + ":" + port + "/" + database);
-        ds.setUsername(plugin.getConfig().getString("storage.username"));
-        ds.setPassword(plugin.getConfig().getString("storage.password"));
+        ds.setUsername(plugin.getPluginConfig().getString("storage.username"));
+        ds.setPassword(plugin.getPluginConfig().getString("storage.password"));
         ds.setConnectionTimeout(5000);
 
         initializeTable();

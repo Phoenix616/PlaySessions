@@ -27,7 +27,7 @@ public interface PlaySessionsPlugin {
 
     boolean isEnabled();
 
-    PlaySessionsConfig getConfig();
+    PlaySessionsConfig getPluginConfig();
 
     int runAsync(Runnable runnable);
 
