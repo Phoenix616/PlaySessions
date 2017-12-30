@@ -89,7 +89,7 @@ public final class PlaySessions extends Plugin implements PlaySessionsPlugin {
                 return UUID.fromString(uuidStr);
             }
         }
-        return null;
+        return manager.getPlayerId(playerName);
     }
 
     @Override

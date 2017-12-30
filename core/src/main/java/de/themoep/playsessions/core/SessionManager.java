@@ -15,6 +15,9 @@ package de.themoep.playsessions.core;
  * along with this program. If not, see <http://mozilla.org/MPL/2.0/>.
  */
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import de.themoep.playsessions.core.storage.MySQLStorage;
 import de.themoep.playsessions.core.storage.SessionStorage;
 
@@ -24,12 +27,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 
 public class SessionManager {
     private final PlaySessionsPlugin plugin;
     private SessionStorage storage = null;
     private Map<UUID, PlaySession> activeSessions = new HashMap<>();
+    private LoadingCache<String, UUID> uuidCache = CacheBuilder.newBuilder().build(new CacheLoader<String, UUID>() {
+        @Override
+        public UUID load(String key) throws Exception {
+            UUID playerId = storage.getPlayerId(key);
+            if (playerId == null) {
+                throw new Exception("No UUID found for " + key);
+            }
+            return playerId;
+        }
+    });
 
     public SessionManager(PlaySessionsPlugin plugin) {
         this.plugin = plugin;
@@ -86,6 +100,14 @@ public class SessionManager {
             }
         }
         return session;
+    }
+    
+    public UUID getPlayerId(String playerName) {
+        try {
+            return uuidCache.get(playerName.toLowerCase());
+        } catch (ExecutionException e) {
+            return null;
+        }
     }
 
     public void disable() {

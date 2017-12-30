@@ -26,4 +26,6 @@ public interface SessionStorage {
     boolean saveSession(PlaySession... sessions);
 
     List<PlaySession> getSessions(UUID playerId);
+    
+    UUID getPlayerId(String playerName);
 }

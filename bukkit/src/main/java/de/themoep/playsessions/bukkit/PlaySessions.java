@@ -75,7 +75,7 @@ public final class PlaySessions extends JavaPlugin implements PlaySessionsPlugin
                 return UUID.fromString(uuidStr);
             }
         }
-        return null;
+        return manager.getPlayerId(playerName);
     }
 
     @Override

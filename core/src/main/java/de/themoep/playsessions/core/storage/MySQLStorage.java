@@ -107,7 +107,7 @@ public class MySQLStorage implements SessionStorage {
         List<PlaySession> sessions = new ArrayList<>();
         String selectSql = "SELECT * FROM `" + table + "` " +
                 "WHERE playerid=? " +
-                "ORDER BY endtime DESC";
+                "ORDER BY id DESC";
         try (Connection conn = getConn(); PreparedStatement stat = conn.prepareStatement(selectSql)) {
             stat.setString(1, playerId.toString());
             try (ResultSet rs = stat.executeQuery()) {
@@ -128,7 +128,31 @@ public class MySQLStorage implements SessionStorage {
         }
         return sessions;
     }
-
+    
+    @Override
+    public UUID getPlayerId(String playerName) {
+        String selectSql = "SELECT playerid FROM `" + table + "` " +
+                "WHERE playername LIKE ? " +
+                "ORDER BY id DESC LIMIT 1";
+        try (Connection conn = getConn(); PreparedStatement stat = conn.prepareStatement(selectSql)) {
+            stat.setString(1, playerName);
+            try (ResultSet rs = stat.executeQuery()) {
+                if (rs.next()) {
+                    try {
+                        return UUID.fromString(rs.getString("playerid"));
+                    } catch (IllegalArgumentException  e) {
+                        plugin.getLogger().log(Level.SEVERE, "Error while querying statement to get uuid of " + playerName + "!", e);
+                    }
+                }
+            } catch (SQLException e) {
+                plugin.getLogger().log(Level.SEVERE, "Error while querying statement to get uuid of " + playerName + "!", e);
+            }
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Error while preparing statement to get uuid of " + playerName + "!", e);
+        }
+        return null;
+    }
+    
     public Connection getConn() throws SQLException {
         return ds.getConnection();
     }
