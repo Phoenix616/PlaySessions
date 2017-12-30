@@ -18,8 +18,8 @@ permissions:
       description: Gives permission to reload the plugin
       default: false
    playsessions.command.list:
-      description: Gives permission to reload the plugin
+      description: Gives permission to list the sessions of players
       default: false
    playsessions.record:
-      description: Gives permission to reload the plugin
+      description: Record the sessions of players with this permission
       default: false
