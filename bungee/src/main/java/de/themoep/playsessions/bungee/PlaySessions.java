@@ -73,7 +73,7 @@ public final class PlaySessions extends Plugin implements PlaySessionsPlugin {
             getLogger().log(Level.SEVERE, "Error while loading config", e);
             return false;
         }
-        logSwitches = getPluginConfig().getBoolean("log-switch");
+        logSwitches = getPluginConfig().getBoolean("log-switches");
         return manager.setupDatabase();
     }
 

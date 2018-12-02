@@ -59,7 +59,7 @@ public final class PlaySessions extends JavaPlugin implements PlaySessionsPlugin
 
     public boolean loadConfig() {
         reloadConfig();
-        logSwitches = getPluginConfig().getBoolean("log-switch");
+        logSwitches = getPluginConfig().getBoolean("log-switches");
         return manager.setupDatabase();
     }
 
