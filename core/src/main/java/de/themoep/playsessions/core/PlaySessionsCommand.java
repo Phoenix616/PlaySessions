@@ -27,7 +27,7 @@ import java.util.UUID;
 public class PlaySessionsCommand {
 
     private static final int PAGE_SIZE = 10;
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat();
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd hh:mm");
     private static final String NO_PERMISSION = ChatColor.RED + "You don't have the permission to use this!";
 
     /**
